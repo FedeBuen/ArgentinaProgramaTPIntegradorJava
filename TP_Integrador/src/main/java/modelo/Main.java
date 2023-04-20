@@ -1,7 +1,7 @@
 package modelo;
 
 import menus.Menu;
-import menus.MenuPrincipal;
+import menus.MenuConfiguracion;
 
 /************************************************************************
  * Clase Main del Trabajo Integrador Final 
@@ -18,17 +18,8 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		
-		
-		Menu menu = new MenuPrincipal();
+		Menu menu = new MenuConfiguracion();
 		menu.iniciar();
-//		Juego juego = new Juego();
-//		juego.leerDatosDesdeArchivos();
-//		juego.resolverJuego();
-//		juego.ImprimirResultados();
-//		juego.listarRondas();
-//		juego.mostrarParticipantes();
-
 
 	}
 

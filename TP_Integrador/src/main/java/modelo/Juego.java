@@ -8,9 +8,11 @@ import java.util.TreeMap;
 import java.util.Map.Entry;
 
 import comparators.PuntajeComparator;
-//import gestores.GestorPartidos;
+import gestores.GestorConfiguracionPuntos;
+import gestores.GestorPartidos;
 import gestores.GestorPartidosSQL;
 import gestores.GestorPronosticos;
+import gestores.GestorPronosticosSQL;
 
 public class Juego {
 
@@ -18,27 +20,60 @@ public class Juego {
 	private HashMap<String, Integer> puntuacion = new HashMap<String, Integer>();
 	private Participantes participantes = new Participantes();
 	private Ronda rondas = new Ronda();
+	private Puntos puntosGanados = new Puntos();
 
 	/**
 	 * Lee los archivos csv y guarda los datos parseados en las colecciones
 	 * 
 	 */
 	public void leerDatosDesdeArchivos() {
-		//GestorPartidos gsPartidos = new GestorPartidos();
-		GestorPronosticos gsPronosticos = new GestorPronosticos();
-		GestorPartidosSQL gsPartidosSQL = new GestorPartidosSQL();
 		
+		System.out.println("--------------------------------------------------");
+		System.out.println(" BIENVENIDO AL SISTEMA DE PRONOSTICOS DEPORTIVOS " );
+		System.out.println("--------------------------------------------------");
+				
+		GestorConfiguracionPuntos gsPuntos = new GestorConfiguracionPuntos();
+		GestorPartidos gsPartidos = new GestorPartidos();
+		GestorPronosticos gsPronosticos = new GestorPronosticos();
+		
+		String pathConfiguracionPuntos = "src/main/resources/archivos/configuracion.csv";
 		String pathParticipantes = "src/main/resources/archivos/participantes.csv";
-		//String pathPartidos = "src/main/resources/archivos/partidos.csv";
+		String pathPartidos = "src/main/resources/archivos/partidos.csv";
 		String pathPronosticos = "src/main/resources/archivos/pronosticos.csv";
 
+		puntosGanados = gsPuntos.cargarPuntosDesdeArchivo(pathConfiguracionPuntos);
 		participantes.armarListaParticipantes(pathParticipantes);
-		rondas = gsPartidosSQL.cargarPartidosDesdeTable();
-		//rondas = gsPartidos.cargarPartidosDesdeArchivo(pathPartidos);
+		rondas = gsPartidos.cargarPartidosDesdeArchivo(pathPartidos);
 		pronosticos = gsPronosticos.cargarPronosticosDesdeArchivo(pathPronosticos);
 
 	}
 
+	/**
+	 * Lee los las tablas desde la base de datos
+	 *  y guarda los datos parseados en las colecciones
+	 * 
+	 */
+	public void leerDatosDesdeBD() {
+		
+		System.out.println("--------------------------------------------------");
+		System.out.println(" BIENVENIDO AL SISTEMA DE PRONOSTICOS DEPORTIVOS " );
+		System.out.println("--------------------------------------------------");
+				
+		GestorConfiguracionPuntos gsPuntos = new GestorConfiguracionPuntos();
+		
+		GestorPartidosSQL gsPartidosSQL = new GestorPartidosSQL();
+		GestorPronosticosSQL gsPronosticosSQL = new GestorPronosticosSQL();
+		
+		String pathConfiguracionPuntos = "src/main/resources/archivos/configuracion.csv";
+		String pathParticipantes = "src/main/resources/archivos/participantes.csv";
+
+		puntosGanados = gsPuntos.cargarPuntosDesdeArchivo(pathConfiguracionPuntos);
+		participantes.armarListaParticipantes(pathParticipantes);
+		rondas = gsPartidosSQL.cargarPartidosDesdeTable();
+		pronosticos = gsPronosticosSQL.cargarPronosticosDesdeTable();
+
+	}
+	
 	/**
 	 * Metodos que recorre las colecciones, realiza las comparaciones y guarda los
 	 * puntos de los participantes en el HashMap de puntuacion
@@ -49,6 +84,7 @@ public class Juego {
 		Partido partido = new Partido();
 		int rondaActual = 0;
 		int puntos = 0;
+
 		try {
 
 			// Recorre el arraylist de pronostico comparando
@@ -66,8 +102,8 @@ public class Juego {
 
 				rondaActual = pronostico.getNroRonda();
 
-				partido = partidos.get(pronostico.getNroPartido());;
-				
+				partido = partidos.get(pronostico.getNroPartido());
+
 				if (partido != null && partido.getResultado().equals(pronostico.getResultado())) {
 
 					// Si ha coincidencia entre el pronostico y el resultado del partido
@@ -77,13 +113,13 @@ public class Juego {
 					if (puntuacion.containsKey(pronostico.getNombre())) {
 
 						puntos = puntuacion.get(pronostico.getNombre());
-						puntos++;
+						puntos = puntos + puntosGanados.getPuntosGana();
 						puntuacion.put(pronostico.getNombre(), puntos);
 
 						// Si es la primera vez que aparece el nombre, lo agrega como
-						// key y al value (puntos) lo inicializa con 1 punto
+						// key y al value (puntos) lo inicializa
 					} else {
-						puntuacion.put(pronostico.getNombre(), 1);
+						puntuacion.put(pronostico.getNombre(), puntosGanados.getPuntosGana());
 					}
 				}
 			}
@@ -96,6 +132,7 @@ public class Juego {
 		System.out.println("-------------------------------------------------------");
 	}
 
+	
 	/**
 	 * Metodo privado que convierte un ArrayList de Partido a un HashMap key : nro
 	 * de partido value : partido
@@ -145,11 +182,8 @@ public class Juego {
 			System.out.println("-------------------------------------------------------");
 			System.out.println(" Ronda : " + e.getKey());
 			for (Partido p : listaPartidosPorRonda) {
-				System.out.println(p.getNroPartido() + "- " 
-						+ p.getEquipoLocal().getNombre() 
-						+ "(" + p.getGolesLocal()
-						+ ")" + " VS " + p.getEquipoVisitante().getNombre() 
-						+ "(" + p.getGolesVisitante() + ")"
+				System.out.println(p.getNroPartido() + "- " + p.getEquipoLocal().getNombre() + "(" + p.getGolesLocal()
+						+ ")" + " VS " + p.getEquipoVisitante().getNombre() + "(" + p.getGolesVisitante() + ")"
 						+ " Resultado : " + p.getResultado());
 			}
 		}
@@ -161,4 +195,10 @@ public class Juego {
 		System.out.println("-------------------------------------------------------");
 		participantes.ListarParticipantes();
 	}
+	
+	public int getPuntuacion (String IdParticipante) {
+		
+		return puntuacion.get(IdParticipante);
+	}
+	
 }

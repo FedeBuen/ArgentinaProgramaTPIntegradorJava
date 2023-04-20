@@ -22,10 +22,9 @@ public class GestorPartidos {
 	private Partido partido;
 
 	/**
-	 * Metodo que lee el archivo de pronosticos y los carga en un HashMap<TuplaId,
-	 * Partido>
+	 * Metodo que lee el archivo de partidos y los carga en una Ronda
 	 * 
-	 * @return partidos
+	 * @return ronda
 	 */
 	public Ronda cargarPartidosDesdeArchivo(String path) {
 
