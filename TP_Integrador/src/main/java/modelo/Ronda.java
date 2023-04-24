@@ -27,5 +27,16 @@ public class Ronda {
 		}
 		this.ronda.put(nroRonda, partidos);
 	}
+	
+	public Integer totalPartidosRonda(int ronda) {
+		
+		int totalPartido =0;
+		for (int m:this.ronda.keySet()) {
+			  this.ronda.get(m).size();
+			  
+		}
+		
+		return totalPartido;
+	}
 
 }

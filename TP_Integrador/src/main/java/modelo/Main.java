@@ -10,6 +10,8 @@ import menus.MenuConfiguracion;
  * Comision 150 - Grupo 5
  * 
  * Desarrollado en lenguaje Java utlizando el IDE Eclipse
+ * Base de datos SQLite
+ * 
  * 
  * **********************************************************************
  */

@@ -9,6 +9,8 @@ import java.util.Map.Entry;
 
 import comparators.PuntajeComparator;
 import gestores.GestorConfiguracionPuntos;
+import gestores.GestorParticipantes;
+import gestores.GestorParticipantesSQL;
 import gestores.GestorPartidos;
 import gestores.GestorPartidosSQL;
 import gestores.GestorPronosticos;
@@ -35,14 +37,15 @@ public class Juego {
 		GestorConfiguracionPuntos gsPuntos = new GestorConfiguracionPuntos();
 		GestorPartidos gsPartidos = new GestorPartidos();
 		GestorPronosticos gsPronosticos = new GestorPronosticos();
+		GestorParticipantes gsParticipante = new GestorParticipantes();
 		
 		String pathConfiguracionPuntos = "src/main/resources/archivos/configuracion.csv";
 		String pathParticipantes = "src/main/resources/archivos/participantes.csv";
 		String pathPartidos = "src/main/resources/archivos/partidos.csv";
 		String pathPronosticos = "src/main/resources/archivos/pronosticos.csv";
 
-		puntosGanados = gsPuntos.cargarPuntosDesdeArchivo(pathConfiguracionPuntos);
-		participantes.armarListaParticipantes(pathParticipantes);
+		puntosGanados = gsPuntos.cargarPuntosDesdeArchivo(pathConfiguracionPuntos);		
+		participantes = gsParticipante.armarListaParticipantes(pathParticipantes);
 		rondas = gsPartidos.cargarPartidosDesdeArchivo(pathPartidos);
 		pronosticos = gsPronosticos.cargarPronosticosDesdeArchivo(pathPronosticos);
 
@@ -63,12 +66,12 @@ public class Juego {
 		
 		GestorPartidosSQL gsPartidosSQL = new GestorPartidosSQL();
 		GestorPronosticosSQL gsPronosticosSQL = new GestorPronosticosSQL();
+		GestorParticipantesSQL gsParticipantes = new GestorParticipantesSQL();
 		
 		String pathConfiguracionPuntos = "src/main/resources/archivos/configuracion.csv";
-		String pathParticipantes = "src/main/resources/archivos/participantes.csv";
-
+		
 		puntosGanados = gsPuntos.cargarPuntosDesdeArchivo(pathConfiguracionPuntos);
-		participantes.armarListaParticipantes(pathParticipantes);
+		participantes = gsParticipantes.armarListaParticipantes();
 		rondas = gsPartidosSQL.cargarPartidosDesdeTable();
 		pronosticos = gsPronosticosSQL.cargarPronosticosDesdeTable();
 
@@ -115,11 +118,17 @@ public class Juego {
 						puntos = puntuacion.get(pronostico.getNombre());
 						puntos = puntos + puntosGanados.getPuntosGana();
 						puntuacion.put(pronostico.getNombre(), puntos);
-
+						
+						//ariel registra los puntos en el participante
+						participantes.setPuntosPersonas(pronostico.getNombre(), rondaActual);
+						
 						// Si es la primera vez que aparece el nombre, lo agrega como
 						// key y al value (puntos) lo inicializa
 					} else {
 						puntuacion.put(pronostico.getNombre(), puntosGanados.getPuntosGana());
+						
+						//ariel registra los puntos en el participante
+						participantes.setPuntosPersonas(pronostico.getNombre(), rondaActual);
 					}
 				}
 			}
@@ -162,7 +171,11 @@ public class Juego {
 		System.out.println("-------------------------------------------------------");
 		System.out.println("         Puntajes");
 		System.out.println("-------------------------------------------------------");
-		result.forEach((k, v) -> System.out.println("El participante " + k + " obtubo un puntaje de: " + v));
+		//result.forEach((k, v) -> System.out.println("El participante " + participantes.getNombre(k) + " obtubo un puntaje de: " + v));
+		//result.forEach((k, v) -> System.out.println("El participante " + k + " obtubo un puntaje de: " + v));
+		
+		participantes.listarPuntosPorParticipantes(rondas);
+		
 		System.out.println("-------------------------------------------------------");
 
 	}
