@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import modelo.Participantes;
 import modelo.Persona;
+import modelo.Puntos;
 
 public class GestorParticipantes {
 
@@ -17,7 +18,7 @@ public class GestorParticipantes {
 		 * @return participante
 		 */
 		
-		public Participantes armarListaParticipantes(String path) {
+		public Participantes armarListaParticipantes(String path, Puntos puntosGanados) {
 			
 			FileReader NombreArchivo;
 			try {
@@ -32,7 +33,7 @@ public class GestorParticipantes {
 					
 					if (!unParticipante[0].isEmpty() && !unParticipante[1].isEmpty()) {
 						
-						Persona p1 =  new Persona(unParticipante[0],unParticipante[1],unParticipante[2],unParticipante[3]);
+						Persona p1 =  new Persona(unParticipante[0],unParticipante[1],unParticipante[2],unParticipante[3], puntosGanados);
 						this.participantes.setParticipantes(unParticipante[0],p1);
 					
 					}else {

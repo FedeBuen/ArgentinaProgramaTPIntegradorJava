@@ -66,7 +66,7 @@ public class MenuPrincipal extends Menu {
 	}
 	@Override
 	public void mensajeErrorOpcionIngresada() {
-		System.out.println("Ingreso incorrecto, debe ser un numero del 1 al 5");
+		System.out.println("Ingreso incorrecto, debe ser un numero del 1 al 4 - 0");
 		
 	}
 

@@ -2,7 +2,7 @@ package modelo;
 
 import java.util.HashMap;
 
-import gestores.GestorConfiguracionPuntos;
+//import gestores.GestorConfiguracionPuntos;
 import lombok.Data;
 
 @Data
@@ -12,20 +12,18 @@ public class Persona {
 	private String Nombre;
 	private String Telefono;
 	private String eMail;
-	private Puntos puntosGanados = new Puntos();
+    private Puntos puntosGanados = new Puntos();
 	private HashMap<Integer,Integer> puntajes = new HashMap<Integer,Integer>();
 	private Integer puntosTotales = 0;
 	private Integer totalRondasPerfectas = 0 ;
 
-	public Persona(String id, String nombre, String telefono, String eMail) {
+	public Persona(String id, String nombre, String telefono, String eMail, Puntos puntosGanados ) {
 		this.Id = id;
 		this.Nombre = nombre;
 		this.Telefono = telefono;
 		this.eMail = eMail;
 		
-		String pathConfiguracionPuntos = "src/main/resources/archivos/configuracion.csv";
-		GestorConfiguracionPuntos gsPuntos = new GestorConfiguracionPuntos();
-		puntosGanados = gsPuntos.cargarPuntosDesdeArchivo(pathConfiguracionPuntos);
+		this.puntosGanados = puntosGanados;
 
 	}
 	

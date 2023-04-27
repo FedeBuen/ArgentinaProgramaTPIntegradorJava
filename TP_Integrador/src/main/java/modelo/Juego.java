@@ -45,7 +45,7 @@ public class Juego {
 		String pathPronosticos = "src/main/resources/archivos/pronosticos.csv";
 
 		puntosGanados = gsPuntos.cargarPuntosDesdeArchivo(pathConfiguracionPuntos);		
-		participantes = gsParticipante.armarListaParticipantes(pathParticipantes);
+		participantes = gsParticipante.armarListaParticipantes(pathParticipantes, puntosGanados);
 		rondas = gsPartidos.cargarPartidosDesdeArchivo(pathPartidos);
 		pronosticos = gsPronosticos.cargarPronosticosDesdeArchivo(pathPronosticos);
 
@@ -71,7 +71,7 @@ public class Juego {
 		String pathConfiguracionPuntos = "src/main/resources/archivos/configuracion.csv";
 		
 		puntosGanados = gsPuntos.cargarPuntosDesdeArchivo(pathConfiguracionPuntos);
-		participantes = gsParticipantes.armarListaParticipantes();
+		participantes = gsParticipantes.armarListaParticipantes(puntosGanados);
 		rondas = gsPartidosSQL.cargarPartidosDesdeTable();
 		pronosticos = gsPronosticosSQL.cargarPronosticosDesdeTable();
 

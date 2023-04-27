@@ -8,6 +8,7 @@ import java.sql.Statement;
 import conexionDB.ConexionDB;
 import modelo.Participantes;
 import modelo.Persona;
+import modelo.Puntos;
 
 public class GestorParticipantesSQL {
 	
@@ -25,7 +26,7 @@ public class GestorParticipantesSQL {
 	 * @return participante
 	 */
 	
-	public Participantes armarListaParticipantes() {
+	public Participantes armarListaParticipantes(Puntos puntosGanados) {
 
 		try {
 			
@@ -46,7 +47,7 @@ public class GestorParticipantesSQL {
 				if (this.validaid(id) && this.validaNombre(nombre) && this.validaTelefono(telefono) && 
 					this.validaEmail(email)) {
 					
-					Persona p1 =  new Persona(id,nombre,telefono,email);
+					Persona p1 =  new Persona(id,nombre,telefono,email, puntosGanados);
 					this.participantes.setParticipantes(id,p1);
 				
 				}else {

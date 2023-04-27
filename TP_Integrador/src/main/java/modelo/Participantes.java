@@ -44,12 +44,14 @@ public class Participantes {
 		public void listarPuntosPorParticipantes(Ronda torneo) {
 			
 			for (String clave: Participantes.keySet()){
+				System.out.println("-------------------------------------------------------");
 				System.out.println("#--->  " + Participantes.get(clave).getNombre());
 				Participantes.get(clave).listPuntos(torneo);
 				Participantes.get(clave).calcularRondasPerfectas(torneo);
 				Participantes.get(clave).calcularFasesPerfectas(torneo);
 				Participantes.get(clave).listPuntosTotales();
 			}
+			System.out.println("-------------------------------------------------------");
 		
 		}
 }

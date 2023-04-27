@@ -4,7 +4,6 @@ import modelo.Juego;
 
 public class MenuConfiguracion extends Menu{
 
-
 	/**
 	 * instancia del juego 
 	 */
